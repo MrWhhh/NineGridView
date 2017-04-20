@@ -1,0 +1,14 @@
+<resources>
+
+    <declare-styleable name="NineGridView">
+
+        <attr name="spacing" format="dimension" />
+
+        <attr name="showStyle" format="enum">
+            <enum name="custom" value="0" />
+            <enum name="grid" value="1" />
+        </attr>
+
+    </declare-styleable>
+
+</resources>
