@@ -22,7 +22,7 @@ Step 2. Add the dependency
   ![image](https://github.com/MrWhhh/NineGridView/raw/master/GIF.gif)
   
   # 自定义样式
-  ![image](https://github.com/MrWhhh/NineGridView/raw/master/GIF2.gif)
+  ![image](https://github.com/MrWhhh/NineGridView/raw/master/GIF3.gif)
   
   # 使用方式
   
