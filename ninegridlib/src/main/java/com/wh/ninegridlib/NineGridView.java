@@ -80,6 +80,8 @@ public class NineGridView<T> extends ViewGroup {
                         height = widthSize / 3 * 2;
                         break;
                     case 4:
+                    case 7:
+                    case 8:
                         height = widthSize;
                         break;
                     case 5:
@@ -87,12 +89,6 @@ public class NineGridView<T> extends ViewGroup {
                         break;
                     case 6:
                         height = widthSize / 3 * 2 + widthSize / 3;
-                        break;
-                    case 7:
-                        height = widthSize + spacing + widthSize / 3;
-                        break;
-                    case 8:
-                        height = widthSize / 3 * 2 + spacing + widthSize / 2;
                         break;
                     default:
                         height = widthSize + spacing * 2;
@@ -117,6 +113,7 @@ public class NineGridView<T> extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childCount = getChildCount();
+        int mGridSize = (getWidth() - spacing * 2) / 3;
         if (showStyle == STYLE_CUSTOM) {
             if (childCount == 3) {
                 for (int i = 0; i < childCount; i++) {
@@ -153,35 +150,23 @@ public class NineGridView<T> extends ViewGroup {
                     }
                 }
                 for (int i = 0; i < childCount - 3; i++) {
-                    ImageView img = (ImageView) getChildAt(i + 3);
-
-                    int width = (getWidth() - spacing * 2) / 3;
-
                     int rowNum = i / 3;
                     int columnNum = i % 3;
-
-                    int left = width * columnNum + spacing * columnNum;
-                    int top = width * rowNum + spacing * (rowNum + 1) + (getWidth() - spacing / 2) / 3 * 2;
-                    int right = left + width;
-                    int bottom = top + width;
-
-                    img.layout(left, top, right, bottom);
+                    int left = mGridSize * columnNum + spacing * columnNum;
+                    int top = mGridSize * rowNum + spacing * (rowNum + 1) + (getWidth() - spacing / 2) / 3 * 2;
+                    int right = left + mGridSize;
+                    int bottom = top + mGridSize;
+                    getChildAt(i + 3).layout(left, top, right, bottom);
                 }
             } else if (childCount % 3 == 0) {
                 for (int i = 0; i < childCount; i++) {
-                    ImageView img = (ImageView) getChildAt(i);
-
-                    int width = (getWidth() - spacing * 2) / 3;
-
                     int rowNum = i / 3;
                     int columnNum = i % 3;
-
-                    int left = width * columnNum + spacing * columnNum;
-                    int top = width * rowNum + spacing * rowNum;
-                    int right = left + width;
-                    int bottom = top + width;
-
-                    img.layout(left, top, right, bottom);
+                    int left = mGridSize * columnNum + spacing * columnNum;
+                    int top = mGridSize * rowNum + spacing * rowNum;
+                    int right = left + mGridSize;
+                    int bottom = top + mGridSize;
+                    getChildAt(i).layout(left, top, right, bottom);
                 }
 
             } else if (childCount == 2 || childCount == 4) {
@@ -203,7 +188,6 @@ public class NineGridView<T> extends ViewGroup {
                     img1.layout(0, 0, getWidth(), getWidth() / img1.getDrawable().getMinimumWidth() * img1.getDrawable().getMinimumHeight());
                     break;
                 case 5:
-                case 8:
                     for (int i = 0; i < 2; i++) {
                         ImageView img = (ImageView) getChildAt(i);
 
@@ -220,69 +204,125 @@ public class NineGridView<T> extends ViewGroup {
                         img.layout(left, top, right, bottom);
                     }
                     for (int i = 0; i < childCount - 2; i++) {
-                        ImageView img = (ImageView) getChildAt(i + 2);
-
-                        int width = (getWidth() - spacing * 2) / 3;
-
                         int rowNum = i / 3;
                         int columnNum = i % 3;
-
-                        int left = width * columnNum + spacing * columnNum;
-                        int top = width * rowNum + spacing * (rowNum + 1) + ((getWidth() - spacing) / 2);
-                        int right = left + width;
-                        int bottom = top + width;
-
-                        img.layout(left, top, right, bottom);
+                        int left = mGridSize * columnNum + spacing * columnNum;
+                        int top = mGridSize * rowNum + spacing * (rowNum + 1) + ((getWidth() - spacing) / 2);
+                        int right = left + mGridSize;
+                        int bottom = top + mGridSize;
+                        getChildAt(i + 2).layout(left, top, right, bottom);
+                    }
+                    break;
+                case 8:
+                    //当8张图片的时候也可以用5张的图片的样式  直接合并case即可
+                    getChildAt(0).layout(0, 0, mGridSize, mGridSize * 2 + spacing);
+                    for (int i = 0; i < 4; i++) {
+                        int rowNum = i / 2;
+                        int columnNum = i % 2;
+                        int left = mGridSize * columnNum + spacing * columnNum + mGridSize + spacing;
+                        int top = mGridSize * rowNum + spacing * rowNum;
+                        int right = left + mGridSize;
+                        int bottom = top + mGridSize;
+                        getChildAt(i + 1).layout(left, top, right, bottom);
+                    }
+                    for (int i = 0; i < childCount - 5; i++) {
+                        int rowNum = i / 3;
+                        int columnNum = i % 3;
+                        int left = mGridSize * columnNum + spacing * columnNum;
+                        int top = mGridSize * 2 + spacing * 2;
+                        int right = left + mGridSize;
+                        int bottom = top + mGridSize;
+                        getChildAt(i + 5).layout(left, top, right, bottom);
                     }
                     break;
                 case 7:
                     for (int i = 0; i < 4; i++) {
                         ImageView img = (ImageView) getChildAt(i);
-
-                        int width = (getWidth() - spacing) / 2;
-
-                        int rowNum = i / 2;
-                        int columnNum = i % 2;
-
-                        int left = width * columnNum + spacing * columnNum;
-                        int top = width * rowNum + spacing * rowNum;
-                        int right = left + width;
-                        int bottom = top + width;
-
-                        img.layout(left, top, right, bottom);
+                        switch (i) {
+                            case 0:
+                                img.layout(0, 0, mGridSize, mGridSize * 2 + spacing);
+                                break;
+                            case 1:
+                                img.layout(mGridSize + spacing, 0, getWidth(), mGridSize);
+                                break;
+                            case 2:
+                                img.layout(mGridSize + spacing, mGridSize + spacing, mGridSize + spacing + mGridSize, mGridSize + spacing + mGridSize);
+                                break;
+                            case 3:
+                                img.layout(mGridSize * 2 + spacing * 2, mGridSize + spacing, getWidth(), mGridSize + spacing + mGridSize);
+                                break;
+                        }
                     }
+                    //另一种格子样式  打开需要屏蔽上边
+//                    for (int i = 0; i < 4; i++) {
+//                        ImageView img = (ImageView) getChildAt(i);
+//                        switch (i) {
+//                            case 0:
+//                                img.layout(0, 0, (getWidth() - spacing * 2) / 3 * 2 + spacing, (getWidth() - spacing * 2) / 3);
+//                                break;
+//                            case 1:
+//                                img.layout((getWidth() - spacing * 2) / 3 * 2 + spacing * 2, 0, getWidth(), (getWidth() - spacing * 2) / 3);
+//                                break;
+//                            case 2:
+//                                img.layout(0, (getWidth() - spacing * 2) / 3 + spacing, (getWidth() - spacing * 2) / 3, (getWidth() - spacing * 2) / 3 + spacing + (getWidth() - spacing * 2) / 3);
+//                                break;
+//                            case 3:
+//                                img.layout((getWidth() - spacing * 2) / 3 + spacing, (getWidth() - spacing * 2) / 3 + spacing, getWidth(), (getWidth() - spacing * 2) / 3 + spacing + (getWidth() - spacing * 2) / 3);
+//                                break;
+//                        }
+//                    }
                     for (int i = 0; i < childCount - 4; i++) {
-                        ImageView img = (ImageView) getChildAt(i + 4);
-
-                        int width = (getWidth() - spacing * 2) / 3;
-
                         int rowNum = i / 3;
                         int columnNum = i % 3;
-
-                        int left = width * columnNum + spacing * columnNum;
-                        int top = width * rowNum + spacing * (rowNum + 2) + ((getWidth() - spacing));
-                        int right = left + width;
-                        int bottom = top + width;
-
-                        img.layout(left, top, right, bottom);
+                        int left = mGridSize * columnNum + spacing * columnNum;
+                        int top = mGridSize * 2 + spacing * 2;
+                        int right = left + mGridSize;
+                        int bottom = top + mGridSize;
+                        getChildAt(i + 4).layout(left, top, right, bottom);
                     }
+
+                    //2*2 + 3*1 样式 打开需要屏蔽上边的
+//                    for (int i = 0; i < 4; i++) {
+//                        ImageView img = (ImageView) getChildAt(i);
+//
+//                        int width = (getWidth() - spacing) / 2;
+//
+//                        int rowNum = i / 2;
+//                        int columnNum = i % 2;
+//
+//                        int left = width * columnNum + spacing * columnNum;
+//                        int top = width * rowNum + spacing * rowNum;
+//                        int right = left + width;
+//                        int bottom = top + width;
+//
+//                        img.layout(left, top, right, bottom);
+//                    }
+//                    for (int i = 0; i < childCount - 4; i++) {
+//                        ImageView img = (ImageView) getChildAt(i + 4);
+//
+//                        int width = (getWidth() - spacing * 2) / 3;
+//
+//                        int rowNum = i / 3;
+//                        int columnNum = i % 3;
+//
+//                        int left = width * columnNum + spacing * columnNum;
+//                        int top = width * rowNum + spacing * (rowNum + 2) + ((getWidth() - spacing));
+//                        int right = left + width;
+//                        int bottom = top + width;
+//
+//                        img.layout(left, top, right, bottom);
+//                    }
                     break;
             }
         } else {
             for (int i = 0; i < childCount; i++) {
-                ImageView img = (ImageView) getChildAt(i);
-
-                int width = (getWidth() - spacing * 2) / 3;
-
                 int rowNum = i / 3;
                 int columnNum = i % 3;
-
-                int left = width * columnNum + spacing * columnNum;
-                int top = width * rowNum + spacing * rowNum;
-                int right = left + width;
-                int bottom = top + width;
-
-                img.layout(left, top, right, bottom);
+                int left = mGridSize * columnNum + spacing * columnNum;
+                int top = mGridSize * rowNum + spacing * rowNum;
+                int right = left + mGridSize;
+                int bottom = top + mGridSize;
+                getChildAt(i).layout(left, top, right, bottom);
             }
         }
     }
