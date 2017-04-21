@@ -1,7 +1,7 @@
 # NineGridView
 微信微博空间相册控件
 
-
+使用方法很简单，大家可下载demo，根据自己需求更改。喜欢的star......
 
 Add it in your root build.gradle at the end of repositories:
 
